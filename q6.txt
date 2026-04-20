@@ -1,0 +1,38 @@
+# Check cluster nodes
+kubectl get nodes
+
+# Create deployment
+kubectl create deployment myapp --image=nginx
+
+# Check pods
+kubectl get pods
+
+# Scale deployment to 3 replicas
+kubectl scale deployment myapp --replicas=3
+
+# Expose deployment as service
+kubectl expose deployment myapp --port=80 --type=NodePort
+
+# Check services
+kubectl get services
+
+# Delete deployment
+kubectl delete deployment myapp
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: myapp }
+  template:
+    metadata:
+      labels: { app: myapp }
+    spec:
+      containers:
+      - name: myapp
+        image: nginx
+        ports:
+        - containerPort: 80
