@@ -1,5 +1,5 @@
-🔥 Q1 – Git (commit, branch, PR)
-▶ Commands
+Q1 – Git (commit, branch, PR)
+
 git init myproject
 cd myproject
 
@@ -14,11 +14,13 @@ git commit -m "feature added"
 
 git remote add origin https://github.com/<username>/repo.git
 git push -u origin feature1
-▶ Then
-Go to GitHub → Create Pull Request
-Merge → Done
-🔥 Q2 – Flask + Docker + Push
-📄 app.py
+
+Create Pull Request on GitHub → Merge
+
+Q2 – Flask + Docker + Push
+
+app.py
+
 from flask import Flask
 app = Flask(__name__)
 
@@ -28,9 +30,13 @@ def home():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
-📄 requirements.txt
+
+requirements.txt
+
 flask
-📄 Dockerfile
+
+Dockerfile
+
 FROM python:3.11-slim
 WORKDIR /app
 COPY requirements.txt .
@@ -38,16 +44,15 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 5000
 CMD ["python","app.py"]
-▶ Run
 docker build -t <username>/flask-app .
 docker run -p 5000:5000 <username>/flask-app
 docker login
 docker push <username>/flask-app
 
-👉 Open: http://localhost:5000
+Q3 – Monolithic Flask App
 
-🔥 Q3 – Monolithic Flask App
-📄 app.py
+app.py
+
 from flask import Flask, request, jsonify
 app = Flask(__name__)
 
@@ -66,15 +71,12 @@ def add_student():
 
 if __name__ == "__main__":
     app.run(debug=True)
-▶ Run
 pip install flask
 python app.py
 
-👉 Browser: http://127.0.0.1:5000/students
+Q4 – GitHub Actions (Docker CI)
 
-🔥 Q4 – GitHub Actions (Docker CI)
-
-📄 .github/workflows/docker.yml
+.github/workflows/docker.yml
 
 name: Docker CI
 on: [push]
@@ -90,35 +92,27 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t ${{ secrets.DOCKER_USERNAME }}/app .
       - run: docker push ${{ secrets.DOCKER_USERNAME }}/app
-▶ Setup
-GitHub → Settings → Secrets:
-DOCKER_USERNAME
-DOCKER_PASSWORD
-▶ Run
 git add .
 git commit -m "ci"
 git push
 
-👉 Check Actions tab
+Q6 – Kubernetes
 
-🔥 Q6 – Kubernetes
-▶ Start cluster
-# Docker Desktop → Enable Kubernetes
 kubectl get nodes
-▶ Commands
+
 kubectl create deployment myapp --image=nginx
 kubectl get pods
 
 kubectl scale deployment myapp --replicas=3
 
 kubectl expose deployment myapp --port=80 --type=NodePort
-
 kubectl get services
 
 kubectl delete deployment myapp
-🔥 Q7 – GitHub Actions (Buildx)
 
-📄 .github/workflows/build.yml
+Q7 – GitHub Actions (Buildx)
+
+.github/workflows/build.yml
 
 name: Docker Build Push
 on: [push]
@@ -136,10 +130,14 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/app:latest
-🔥 Q8 – Flask Container (same as Q2 without push)
+
+Q8 – Flask Container
+
 docker build -t flask-app .
 docker run -p 5000:5000 flask-app
-🔥 Q9 – Clone, Modify, Push
+
+Q9 – Clone, Modify, Push
+
 git clone https://github.com/<username>/<repo>.git
 cd repo
 
@@ -148,11 +146,16 @@ echo "update" >> README.md
 git add .
 git commit -m "updated"
 git push
-🔥 Q10 – GitHub Actions (Testing)
-📄 app.py
+
+Q10 – GitHub Actions (Testing)
+
+app.py
+
 def add(a,b): return a+b
 def greet(name): return f"Hello, {name}!"
-📄 test_app.py
+
+test_app.py
+
 from app import add, greet
 
 def test_add():
@@ -160,7 +163,9 @@ def test_add():
 
 def test_greet():
     assert greet("World") == "Hello, World!"
-📄 .github/workflows/test.yml
+
+.github/workflows/test.yml
+
 name: test
 on: [push]
 
