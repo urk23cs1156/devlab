@@ -1,1 +1,20 @@
+git init myproject
+cd myproject
 
+echo "# DevOps" > README.md
+git add .
+git commit -m "initial commit"
+
+git checkout -b feature1
+echo "hello" > file.txt
+git add .
+git commit -m "feature added"
+
+git remote add origin https://github.com/<username>/<repo>.git
+git push -u origin feature1
+
+# Create Pull Request on GitHub → Merge
+
+git checkout main
+git pull
+git branch -d feature1
