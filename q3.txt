@@ -1,0 +1,39 @@
+app.py
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+students = []
+
+# GET all students
+@app.route('/students', methods=['GET'])
+def get_students():
+    return jsonify(students)
+
+# ADD student
+@app.route('/students', methods=['POST'])
+def add_student():
+    data = request.form
+    student = {
+        "name": data.get("name"),
+        "roll": data.get("roll")
+    }
+    students.append(student)
+    return jsonify(student)
+
+# DELETE student by roll
+@app.route('/students/<roll>', methods=['DELETE'])
+def delete_student(roll):
+    global students
+    students = [s for s in students if s["roll"] != roll]
+    return jsonify({"message": "Student deleted"})
+    
+if __name__ == "__main__":
+    app.run(debug=True)
+
+pip install flask
+python app.py
+
+curl -X POST http://127.0.0.1:5000/students \-d "name=Akash" -d "roll=101"
+curl http://127.0.0.1:5000/students
+curl -X DELETE http://127.0.0.1:5000/students/101
